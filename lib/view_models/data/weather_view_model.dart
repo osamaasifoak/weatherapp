@@ -6,9 +6,15 @@ import 'package:weatherapp/services/network/api_response_states.dart';
 import 'package:weatherapp/view_models/repository/remote/weather_repository.dart';
 
 class WeatherViewModel extends ChangeNotifier {
-  late ConsolidatedWeatherModel _selectedWeather;
-  ConsolidatedWeatherModel get selectedWeather => _selectedWeather;
-  set setSelectedWeather(ConsolidatedWeatherModel selectedWeather) {
+  String _cityName = "Berlin";
+  String get cityName => _cityName;
+  set setCityName(String cityName) {
+    _cityName = cityName;
+    notifyListeners();
+  }
+  late WeatherInfoModel _selectedWeather;
+  WeatherInfoModel get selectedWeather => _selectedWeather;
+  set setSelectedWeather(WeatherInfoModel selectedWeather) {
     _selectedWeather = selectedWeather;
     notifyListeners();
   }
@@ -49,10 +55,12 @@ class WeatherViewModel extends ChangeNotifier {
       var res =
           await serviceLocatorInstance<WeatherRepository>().fetchWeather(woeid);
       WeatherModel weatherModel = WeatherModel.fromJson(res);
-      setSelectedWeather = weatherModel.consolidatedWeather[0];
+      setSelectedWeather = weatherModel.weatherInfo[0];
       setWeatherResponse = ApiResponse.completed(weatherModel);
     } catch (e) {
       setWeatherResponse = ApiResponse.error(e.toString());
     }
   }
 }
+
+// 'assets/${e.weatherState.toLowerCase().replaceAll(' ', '_')}.png'

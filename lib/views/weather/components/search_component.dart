@@ -34,6 +34,7 @@ class SearchCityComponent extends StatelessWidget {
           ),
           onFieldSubmitted: (String? cityName) {
             if (cityName != null) {
+              consumer.setCityName = cityName;
               consumer.searchCity(cityName);
             }
           },
