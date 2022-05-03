@@ -25,7 +25,7 @@ class WeatherViewModel extends ChangeNotifier {
     _cityResponse = cityResponse;
   }
 
-  ApiResponse _weatherResponse = ApiResponse.loading();
+  ApiResponse _weatherResponse = ApiResponse.completed(null);
   ApiResponse get weatherResponse => _weatherResponse;
   set setWeatherResponse(ApiResponse weatherResponse) {
     _weatherResponse = weatherResponse;
@@ -39,8 +39,8 @@ class WeatherViewModel extends ChangeNotifier {
           .searchCity(cityName);
       if (res.isNotEmpty) {
         CityModel city = CityModel.fromJson(res[0]);
-        await fetchWeather(city.woeid);
         setCityResponse = ApiResponse.completed(city);
+        await fetchWeather(city.woeid);
       } else {
         setCityResponse = ApiResponse.completed(null);
       }
