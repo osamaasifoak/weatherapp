@@ -56,7 +56,7 @@ class WeatherCardComponent extends StatelessWidget {
                           sizedBoxH15,
                           Flexible(
                             child: Text(
-                              "${e.maxTemp.toStringAsFixed(0)}º}/${e.minTemp.toStringAsFixed(0)}º",
+                              "${e.maxTemp.toStringAsFixed(0)}º/${e.minTemp.toStringAsFixed(0)}º",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge

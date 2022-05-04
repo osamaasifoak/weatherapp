@@ -69,7 +69,7 @@ class WeatherInfoModel {
   late final String applicableDate;
   late final double minTemp;
   late final double maxTemp;
-  late final double theTemp;
+  late  double theTemp;
   late final double windSpeed;
   late final double? windDirection;
   late final double? airPressure;

@@ -1,4 +1,6 @@
 class AssetConstants{
+  static String bgMap =  "assets/bg-map-new.png";
+  static String welcome =  "assets/welcome.png";
   static String icLeaf =  "assets/icons/ic-leaf.png";
   static String icDrop =  "assets/icons/ic-drop.png";
   static String icMeter =  "assets/icons/ic-meter.png";

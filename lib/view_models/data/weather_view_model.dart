@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weatherapp/constants/strings/string_constants.dart';
 import 'package:weatherapp/main.dart';
 import 'package:weatherapp/models/city_model.dart';
 import 'package:weatherapp/models/weather_model.dart';
@@ -6,12 +7,15 @@ import 'package:weatherapp/services/network/api_response_states.dart';
 import 'package:weatherapp/view_models/repository/remote/weather_repository.dart';
 
 class WeatherViewModel extends ChangeNotifier {
-  String _cityName = "Berlin";
+  String selectedTemperatureUnit = StringConstants.c;
+
+  String _cityName = "";
   String get cityName => _cityName;
   set setCityName(String cityName) {
     _cityName = cityName;
     notifyListeners();
   }
+
   late WeatherInfoModel _selectedWeather;
   WeatherInfoModel get selectedWeather => _selectedWeather;
   set setSelectedWeather(WeatherInfoModel selectedWeather) {
@@ -19,13 +23,7 @@ class WeatherViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  ApiResponse _cityResponse = ApiResponse.loading();
-  ApiResponse get cityResponse => _cityResponse;
-  set setCityResponse(ApiResponse cityResponse) {
-    _cityResponse = cityResponse;
-  }
-
-  ApiResponse _weatherResponse = ApiResponse.completed(null);
+  ApiResponse _weatherResponse = ApiResponse.completed([]);
   ApiResponse get weatherResponse => _weatherResponse;
   set setWeatherResponse(ApiResponse weatherResponse) {
     _weatherResponse = weatherResponse;
@@ -33,33 +31,51 @@ class WeatherViewModel extends ChangeNotifier {
   }
 
   Future<void> searchCity(String cityName) async {
-    setCityResponse = ApiResponse.loading();
+    setWeatherResponse = ApiResponse.loading();
     try {
       var res = await serviceLocatorInstance<WeatherRepository>()
           .searchCity(cityName);
       if (res.isNotEmpty) {
         CityModel city = CityModel.fromJson(res[0]);
-        setCityResponse = ApiResponse.completed(city);
-        await fetchWeather(city.woeid);
+        WeatherModel _weather = await fetchWeather(city.woeid);
+        setSelectedWeather = _weather.weatherInfo[0];
+        setWeatherResponse = ApiResponse.completed(_weather);
       } else {
-        setCityResponse = ApiResponse.completed(null);
+        setWeatherResponse = ApiResponse.completed(null);
       }
     } catch (e) {
-      setCityResponse = ApiResponse.error(e.toString());
+      setWeatherResponse = ApiResponse.error(e.toString());
     }
   }
 
-  Future<void> fetchWeather(int woeid) async {
+  Future<WeatherModel> fetchWeather(int woeid) async {
     setWeatherResponse = ApiResponse.loading();
     try {
       var res =
           await serviceLocatorInstance<WeatherRepository>().fetchWeather(woeid);
-      WeatherModel weatherModel = WeatherModel.fromJson(res);
-      setSelectedWeather = weatherModel.weatherInfo[0];
-      setWeatherResponse = ApiResponse.completed(weatherModel);
+      return WeatherModel.fromJson(res);
     } catch (e) {
-      setWeatherResponse = ApiResponse.error(e.toString());
+      rethrow;
     }
+  }
+
+  switchTemperatureUnit(String val) {
+    selectedTemperatureUnit = val;
+    if (selectedTemperatureUnit == StringConstants.c) {
+      convertToCentigrade();
+    } else {
+      convertFarenhite();
+    }
+
+    notifyListeners();
+  }
+
+  convertToCentigrade() {
+    _selectedWeather.theTemp = (_selectedWeather.theTemp - 32.0) * 5.0 / 9.0;
+  }
+
+  convertFarenhite() {
+    _selectedWeather.theTemp = (_selectedWeather.theTemp * 9.0 / 5.0) + 32.0;
   }
 }
 

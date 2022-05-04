@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weatherapp/components/custom_switch_component.dart';
 import 'package:weatherapp/constants/colors/color_constants.dart';
 import 'package:weatherapp/constants/strings/asset_constants.dart';
 import 'package:weatherapp/constants/strings/string_constants.dart';
 import 'package:weatherapp/models/weather_model.dart';
 import 'package:weatherapp/utils/utils.dart';
+import 'package:weatherapp/view_models/data/weather_view_model.dart';
 import 'package:weatherapp/views/weather/components/search_component.dart';
 
 class SelectedWeatherCardComponent extends StatelessWidget {
@@ -14,6 +17,7 @@ class SelectedWeatherCardComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     const sizedBoxH15 = SizedBox(height: 15);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: Column(
@@ -88,10 +92,14 @@ class SelectedWeatherCardComponent extends StatelessWidget {
   }
 
   Container maiCard(Size _size, SizedBox sizedBoxH15, BuildContext context) {
+    List<String> temperatureUnits = [
+      StringConstants.c,
+      StringConstants.f,
+    ];
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/bg-map-new.png"),
+          image: AssetImage(AssetConstants.bgMap),
           fit: BoxFit.fitWidth,
         ),
       ),
@@ -105,16 +113,26 @@ class SelectedWeatherCardComponent extends StatelessWidget {
           children: [
             sizedBoxH15,
             Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  weather.weatherStateName,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall
-                      ?.copyWith(color: ColorConstants.lightGrey),
-                ),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    weather.weatherStateName,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(color: ColorConstants.lightGrey),
+                  ),
+                  Consumer<WeatherViewModel>(
+                      builder: (context, consumer, child) {
+                    return CustomSwitchComponent(
+                      values: temperatureUnits,
+                      selectedValue: consumer.selectedTemperatureUnit,
+                      onTap: (val)=> consumer.switchTemperatureUnit(val),
+                    );
+                  })
+                ],
               ),
             ),
             sizedBoxH15,

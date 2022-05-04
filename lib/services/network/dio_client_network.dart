@@ -9,7 +9,6 @@ class DioClientNetwork {
     dio.options = setBaseOptions();
     dio.interceptors.add(LogInterceptor(
         request: true, responseBody: true, requestBody: true, error: true));
-    print(dio.options.headers);
   }
 
   BaseOptions setBaseOptions() {

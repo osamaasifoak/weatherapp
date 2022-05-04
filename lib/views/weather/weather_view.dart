@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weatherapp/components/error_component.dart';
 import 'package:weatherapp/constants/colors/color_constants.dart';
+import 'package:weatherapp/constants/strings/asset_constants.dart';
 import 'package:weatherapp/constants/strings/string_constants.dart';
 import 'package:weatherapp/models/weather_model.dart';
 import 'package:weatherapp/services/network/api_response_states.dart';
 import 'package:weatherapp/utils/utils.dart';
 import 'package:weatherapp/view_models/data/weather_view_model.dart';
 import 'package:weatherapp/views/weather/components/empty_screen_component.dart';
-import 'package:weatherapp/views/weather/components/search_component.dart';
 import 'package:weatherapp/views/weather/components/selected_weather_card_component.dart';
 import 'package:weatherapp/views/weather/components/weather_card_component.dart';
 
@@ -28,10 +28,21 @@ class WeatherView extends StatelessWidget {
               );
             } else if (consumer.weatherResponse.status == Status.error) {
               return ErrorComponent(
-                  onTap: () {}, message: consumer.weatherResponse.message!);
+                  onTap: () {
+                    consumer.searchCity(consumer.cityName);
+                  },
+                  message: consumer.weatherResponse.message!);
             } else {
               if (consumer.weatherResponse.data == null) {
-                return const EmptyScreenComponent();
+                return EmptyScreenComponent(
+                  assetPath: AssetConstants.welcome,
+                  text: StringConstants.noDataText(consumer.cityName),
+                );
+              } else if (consumer.weatherResponse.data is List) {
+                return EmptyScreenComponent(
+                  assetPath: AssetConstants.welcome,
+                  text: StringConstants.welcomeText,
+                );
               } else {
                 WeatherModel weather = consumer.weatherResponse.data;
                 if (Utils.getOrientation(context) == Orientation.landscape) {
@@ -40,9 +51,14 @@ class WeatherView extends StatelessWidget {
                     children: [
                       Flexible(
                         flex: 2,
-                        child: SingleChildScrollView(
-                          child: SelectedWeatherCardComponent(
-                            weather: consumer.selectedWeather,
+                        child: RefreshIndicator(
+                          color: ColorConstants.lightGrey,
+                          onRefresh: () =>
+                              consumer.searchCity(consumer.cityName),
+                          child: SingleChildScrollView(
+                            child: SelectedWeatherCardComponent(
+                              weather: consumer.selectedWeather,
+                            ),
                           ),
                         ),
                       ),
@@ -62,23 +78,26 @@ class WeatherView extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return Column(
-                    children: [
-                      SelectedWeatherCardComponent(
-                        weather: consumer.selectedWeather,
-                      ),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: WeatherCardComponent(
-                            weather: weather,
-                            onTap: (val) {
-                              consumer.setSelectedWeather = val;
-                            },
+                  return RefreshIndicator(
+                    onRefresh: () => consumer.searchCity(consumer.cityName),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SelectedWeatherCardComponent(
+                            weather: consumer.selectedWeather,
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: WeatherCardComponent(
+                              weather: weather,
+                              onTap: (val) {
+                                consumer.setSelectedWeather = val;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   );
                 }
               }
