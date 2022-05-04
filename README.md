@@ -1,6 +1,6 @@
 # Weather App
 
-A Flutter app for the user to complete their profile creation steps and mark them as done
+A Flutter app for the weather for casting
 ![sample](app-preview.jpeg)
 
 ## How to run 
