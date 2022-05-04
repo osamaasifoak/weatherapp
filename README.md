@@ -1,7 +1,7 @@
 # Weather App
 
 A Flutter app for the user to complete their profile creation steps and mark them as done
-![sample](app-preview.png)
+![sample](app-preview.jpeg)
 
 ## How to run 
 

@@ -20,4 +20,8 @@ void main() async {
     provider.switchTemperatureUnit(StringConstants.c);
     expect(provider.selectedTemperatureUnit, StringConstants.c);
   });
+  test('Change temperature unit state', () {
+    provider.switchTemperatureUnit(StringConstants.c);
+    expect(provider.selectedTemperatureUnit, StringConstants.c);
+  });
 }

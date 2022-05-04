@@ -78,5 +78,3 @@ class WeatherViewModel extends ChangeNotifier {
     _selectedWeather.theTemp = (_selectedWeather.theTemp * 9.0 / 5.0) + 32.0;
   }
 }
-
-// 'assets/${e.weatherState.toLowerCase().replaceAll(' ', '_')}.png'

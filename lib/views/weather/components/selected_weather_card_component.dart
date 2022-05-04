@@ -76,11 +76,11 @@ class SelectedWeatherCardComponent extends StatelessWidget {
           _WeatherInfoCard(
               icon: AssetConstants.icLeaf,
               title: StringConstants.humidity,
-              value: weather.humidity.toString()),
+              value: "${weather.humidity.toString()}%"),
           _WeatherInfoCard(
               icon: AssetConstants.icMeter,
               title: StringConstants.pressure,
-              value: weather.airPressure.toString()),
+              value: "${weather.airPressure.toString()} hPa"),
           _WeatherInfoCard(
               icon: AssetConstants.icWind,
               title: StringConstants.wind,
