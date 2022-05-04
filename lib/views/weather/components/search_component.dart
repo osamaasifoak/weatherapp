@@ -19,6 +19,7 @@ class SearchCityComponent extends StatelessWidget {
           top: Utils.getOrientation(context) == Orientation.landscape ? 15 : 0),
       child: Consumer<WeatherViewModel>(builder: (context, consumer, child) {
         return TextFormField(
+          initialValue: consumer.cityName,
           decoration: InputDecoration(
             hintText: StringConstants.enterCity,
             prefixIcon: const Icon(Icons.search),

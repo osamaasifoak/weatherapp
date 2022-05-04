@@ -18,6 +18,7 @@ class WeatherView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Consumer<WeatherViewModel>(
           builder: (context, consumer, child) {
@@ -51,8 +52,10 @@ class WeatherView extends StatelessWidget {
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height,
                             child: WeatherCardComponent(
-                              weather: weather,
-                            ),
+                                weather: weather,
+                                onTap: (val) {
+                                  consumer.setSelectedWeather = val;
+                                }),
                           ),
                         ),
                       ),
@@ -60,14 +63,19 @@ class WeatherView extends StatelessWidget {
                   );
                 } else {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SelectedWeatherCardComponent(
                         weather: consumer.selectedWeather,
                       ),
                       Flexible(
-                        child: WeatherCardComponent(
-                          weather: weather,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: WeatherCardComponent(
+                            weather: weather,
+                            onTap: (val) {
+                              consumer.setSelectedWeather = val;
+                            },
+                          ),
                         ),
                       ),
                     ],
