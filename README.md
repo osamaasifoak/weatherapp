@@ -1,6 +1,6 @@
 # Weather App
 
-A Flutter app for the weather for casting
+A Flutter app for the weather forecasting
 ![sample](app-preview.jpeg)
 
 ## How to run 
