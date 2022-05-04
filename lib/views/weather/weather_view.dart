@@ -81,6 +81,7 @@ class WeatherView extends StatelessWidget {
                   return RefreshIndicator(
                     onRefresh: () => consumer.searchCity(consumer.cityName),
                     child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       child: Column(
                         children: [
                           SelectedWeatherCardComponent(
