@@ -49,7 +49,6 @@ In `lib/constants` we defined our app strings, color and theme
 
 ### `lib/models/*`
 These classes are responsible for data parsing and representation. 
-Most people use the model name as a provider but here in this example model is only for parsing data and converting data to a JSON object.
 
 ### `lib/view_model/data/*`
 
