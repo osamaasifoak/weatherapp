@@ -26,6 +26,7 @@ flutter pub get
 * Create a minimal UI.
 * Get weather data from API.
 * Handle error.
+* Pull to refresh
 * Centigrade to Farenhite conversion or vise versa.
 * Handle UI in portrait and landscape mode.
 * Update weather states on user selection.
