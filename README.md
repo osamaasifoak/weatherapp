@@ -57,7 +57,7 @@ This directory contains the provider classes that are provided in `main.dart`. T
 represent the app state.
 
 Here in this app. I create the weather_view_model which is responsible for the following things
-1. It will get the data from API and handle the error states also if something happens during the call. `Note`: I didn't create a repository for separating the network calls. since we are dealing with only one API call. 
+1. It will get the data from API and handle the error states also if something happens during the call.
 2. It will set the initial state of app.
 3. It changes the states on API result.
 4. It changes the state of temperature unit.
